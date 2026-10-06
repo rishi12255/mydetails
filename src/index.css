@@ -1,0 +1,19 @@
+@import "tailwindcss";
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px; /* Adjust according to your navbar height */
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
