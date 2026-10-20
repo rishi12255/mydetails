@@ -47,7 +47,7 @@ function Footer() {
       </div>
 
       <p className="text-gray-500 text-xs sm:text-sm">
-        © 2025 Rishi Malla. All rights reserved.
+        © 2026 Rishi Malla. All rights reserved.
       </p>
     </motion.footer>
   );
