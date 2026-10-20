@@ -12,10 +12,11 @@ function Contact() {
   });
 
   const [status, setStatus] = useState('');
+  const [sending, setSending] = useState(false);
 
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.2,
+    threshold: 0.1,
   });
 
   const handleChange = (e) => {
@@ -28,7 +29,6 @@ function Contact() {
   const sendEmail = (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
     if (
       !formData.name.trim() ||
       !formData.email.trim() ||
@@ -38,6 +38,9 @@ function Contact() {
       return;
     }
 
+    setSending(true);
+    setStatus('');
+
     emailjs
       .send(
         'service_03t9uur',
@@ -45,103 +48,217 @@ function Contact() {
         formData,
         '30cy7zYejeV5WxG0L'
       )
-      .then(
-        (response) => {
-          console.log('SUCCESS!', response.status, response.text);
-
-          setStatus('✅ Message sent successfully!');
-
-          setFormData({
-            name: '',
-            email: '',
-            message: '',
-          });
-        },
-        (err) => {
-          console.error('FAILED...', err);
-          setStatus('❌ Failed to send message. Please try again.');
-        }
-      );
+      .then(() => {
+        setStatus('✅ Message sent successfully!');
+        setFormData({
+          name: '',
+          email: '',
+          message: '',
+        });
+      })
+      .catch(() => {
+        setStatus('❌ Failed to send message. Please try again.');
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   return (
     <motion.section
       id="contact"
       ref={ref}
-      initial={{ opacity: 0, y: 100 }}
+      initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="max-w-lg mx-auto mt-28 mb-28 p-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl shadow-2xl border border-gray-700"
+      className="w-full bg-gray-900 px-5 py-24 sm:px-8 sm:py-28"
       tabIndex={-1}
-      aria-label="Contact form"
+      aria-label="Contact section"
     >
-      <h2 className="text-3xl font-extrabold mb-8 text-center text-green-400 tracking-wide">
-        Send Me a Message
-      </h2>
+      <div className="mx-auto max-w-6xl">
 
-      <form
-        onSubmit={sendEmail}
-        className="flex flex-col space-y-6"
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          className="p-4 rounded-xl bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-green-400 focus:border-green-500 transition duration-300 shadow-inner"
-          required
-          aria-required="true"
-          aria-label="Your name"
-        />
+        {/* Heading */}
+        <div className="mb-14 text-center">
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-green-400" />
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-green-400">
+              Get in touch
+            </span>
+            <span className="h-px w-10 bg-green-400" />
+          </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="p-4 rounded-xl bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-green-400 focus:border-green-500 transition duration-300 shadow-inner"
-          required
-          aria-required="true"
-          aria-label="Your email"
-        />
+          <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
+            Let's <span className="text-green-400">Connect</span>
+          </h2>
 
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          value={formData.message}
-          onChange={handleChange}
-          rows="6"
-          className="p-4 rounded-xl bg-gray-800 border border-gray-600 text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-4 focus:ring-green-400 focus:border-green-500 transition duration-300 shadow-inner"
-          required
-          aria-required="true"
-          aria-label="Your message"
-        />
-
-        <button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold text-lg rounded-xl py-4 shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-opacity-50"
-        >
-          Send Message
-        </button>
-
-        {status && (
-          <p
-            className={`text-center mt-3 font-medium ${
-              status.startsWith('✅')
-                ? 'text-green-400'
-                : 'text-red-500'
-            }`}
-            role="alert"
-          >
-            {status}
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-gray-400 sm:text-base">
+            Have a project idea, a question, or just want to say hello?
+            Send me a message and let's talk.
           </p>
-        )}
-      </form>
+        </div>
+
+        {/* Contact layout */}
+        <div className="grid overflow-hidden rounded-3xl border border-gray-700 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl md:grid-cols-5">
+
+          {/* Left information panel */}
+          <div className="relative overflow-hidden p-7 sm:p-10 md:col-span-2">
+            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-green-400/10 blur-3xl" />
+
+            <div className="relative">
+              <span className="inline-flex rounded-xl border border-green-400/20 bg-green-400/10 px-4 py-2 text-sm font-semibold text-green-400">
+                Contact Me ✦
+              </span>
+
+              <h3 className="mt-7 text-3xl font-bold leading-tight text-white">
+                Let's build something
+                <span className="block text-green-400">great together.</span>
+              </h3>
+
+              <p className="mt-5 text-sm leading-7 text-gray-400">
+                I'm always interested in learning, building creative websites,
+                and connecting with people who share similar ideas.
+              </p>
+
+              <div className="mt-9 space-y-5">
+                <div className="flex items-center gap-4 rounded-xl border border-gray-700 bg-gray-900/60 p-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-green-400/10 text-xl text-green-400">
+                    @
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Get in touch</p>
+                    <p className="mt-1 font-medium text-gray-200">
+                      Send me an email
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 rounded-xl border border-gray-700 bg-gray-900/60 p-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-green-400/10 text-xl text-green-400">
+                    {'</>'}
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">My focus</p>
+                    <p className="mt-1 font-medium text-gray-200">
+                      Web Development
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10 flex items-center gap-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                <span className="text-sm text-gray-400">
+                  Open to learning and new ideas
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right form panel */}
+          <div className="border-t border-gray-700 p-7 sm:p-10 md:col-span-3 md:border-l md:border-t-0">
+            <h3 className="text-2xl font-bold text-white">
+              Send a Message<span className="text-green-400">.</span>
+            </h3>
+
+            <p className="mt-2 text-sm text-gray-400">
+              Fill in the details below to contact me.
+            </p>
+
+            <form onSubmit={sendEmail} className="mt-8 space-y-5">
+              <div>
+                <label
+                  htmlFor="contact-name"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
+                  Your Name
+                </label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-gray-700 bg-gray-900/80 px-4 py-3.5 text-white placeholder-gray-500 outline-none transition focus:border-green-400 focus:ring-2 focus:ring-green-400/10"
+                  required
+                  autoComplete="name"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-email"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
+                  Email Address
+                </label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-gray-700 bg-gray-900/80 px-4 py-3.5 text-white placeholder-gray-500 outline-none transition focus:border-green-400 focus:ring-2 focus:ring-green-400/10"
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-message"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
+                  Your Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  placeholder="Tell me about your ideas..."
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={5}
+                  className="w-full resize-y rounded-xl border border-gray-700 bg-gray-900/80 px-4 py-3.5 text-white placeholder-gray-500 outline-none transition focus:border-green-400 focus:ring-2 focus:ring-green-400/10"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={sending}
+                className="flex w-full items-center justify-center gap-3 rounded-xl bg-green-500 px-6 py-4 font-bold text-gray-950 shadow-lg shadow-green-500/10 transition duration-300 hover:-translate-y-0.5 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {sending ? 'Sending...' : 'Send Message'}
+                {!sending && <span>↗</span>}
+              </button>
+
+              {status && (
+                <p
+                  className={`rounded-lg border p-3 text-center text-sm ${
+                    status.startsWith('✅')
+                      ? 'border-green-400/20 bg-green-400/10 text-green-400'
+                      : 'border-red-400/20 bg-red-400/10 text-red-400'
+                  }`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  {status}
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+
+        {/* Footer decoration */}
+        <div className="mt-12 flex items-center justify-center gap-4">
+          <span className="h-px w-16 bg-gradient-to-r from-transparent to-green-400/50" />
+          <span className="text-green-400">✦</span>
+          <span className="h-px w-16 bg-gradient-to-l from-transparent to-green-400/50" />
+        </div>
+      </div>
     </motion.section>
   );
 }
 
 export default Contact;
-
