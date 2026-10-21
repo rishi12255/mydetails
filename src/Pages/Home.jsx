@@ -9,25 +9,16 @@ function Hero() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: 'easeOut' }}
-      className="relative min-h-[calc(100svh-70px)] flex items-center justify-center overflow-hidden px-5 py-4 text-center bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900"
+      className="relative min-h-[calc(100svh-70px)] flex items-center justify-center overflow-hidden px-5 py-4 text-center bg-gray-900"
       tabIndex={-1}
       aria-label="Hero Section"
     >
       {/* Background decoration */}
       <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-green-400/5 blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-48 h-48 rounded-full bg-green-400/10 blur-3xl" />
+      <div className="absolute bottom-10 right-10 w-48 h-48 rounded-full bg-green-400/5 blur-3xl" />
 
       {/* Main content */}
       <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center -translate-y-4 sm:-translate-y-5">
-
-        {/* Heading */}
-        <div className="flex items-center justify-center gap-3 mb-5">
-          <span className="w-10 h-px bg-green-400" />
-          <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-green-400 font-semibold">
-            Welcome to my portfolio
-          </p>
-          <span className="w-10 h-px bg-green-400" />
-        </div>
 
         {/* Profile image */}
         <motion.div
@@ -46,7 +37,7 @@ function Hero() {
             />
           </div>
 
-          <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-green-400 border-4 border-gray-800" />
+          <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-green-400 border-4 border-gray-900" />
         </motion.div>
 
         {/* Name */}
@@ -73,7 +64,7 @@ function Hero() {
           {['React', 'JavaScript', 'Tailwind CSS'].map((skill) => (
             <span
               key={skill}
-              className="px-4 py-2 rounded-full border border-gray-700 bg-gray-800/70 text-sm text-gray-300 hover:border-green-400/60 hover:text-green-400 transition"
+              className="px-4 py-2 rounded-full border border-gray-700 bg-gray-800/40 text-sm text-gray-300 hover:border-green-400/60 hover:text-green-400 transition"
             >
               {skill}
             </span>
